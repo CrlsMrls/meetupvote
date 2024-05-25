@@ -1,0 +1,9 @@
+<div class="flex flex-wrap">
+  @for (election of elections; track $index) {
+  <app-card [title]="election.title" [link]='"/elections/" + election.id' class="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-4">
+    <p class="text-gray-600 dark:text-gray-400 mb-4">{{ election.description }}</p>
+
+
+  </app-card>
+  }
+</div>

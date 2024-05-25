@@ -1,18 +1,18 @@
-import { NgIf } from '@angular/common';
-import { Component, OnInit, input } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { NavigationService } from '../../header.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [NgIf],
+  imports: [RouterModule],
+  providers: [],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit {
-  title = input.required<string>();
+  public navigationService = inject(NavigationService);
   isDarkMode: boolean = false;
-
-  constructor() {}
 
   ngOnInit(): void {
     const prefersDarkMode = window.matchMedia(
@@ -35,7 +35,6 @@ export class HeaderComponent implements OnInit {
 
   getThemePreference(): boolean {
     const storedPreference = localStorage.getItem('themePreferenceDark');
-    console.log(storedPreference);
     return storedPreference ? JSON.parse(storedPreference) : false;
   }
 
