@@ -18,7 +18,7 @@ import {
   GithubAuthProvider,
 } from 'firebase/auth';
 
-import { environment } from './environments/environment';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root',
