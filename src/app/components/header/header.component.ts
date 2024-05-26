@@ -1,6 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { NavigationService } from '../../header.service';
 import { RouterModule } from '@angular/router';
+import { FirebaseService } from '../../firebase.service';
 
 @Component({
   selector: 'app-header',
@@ -12,6 +13,7 @@ import { RouterModule } from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
   public navigationService = inject(NavigationService);
+  public firebaseService = inject(FirebaseService);
   isDarkMode: boolean = false;
 
   ngOnInit(): void {

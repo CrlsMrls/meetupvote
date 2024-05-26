@@ -60,3 +60,32 @@ I want to transform the `header$` observable to a signal. How can I do that?
   </div>
 
   ```
+
+
+  I need to create an Angular Service, that imports environment variables, initializes Firebase, adds Firestore service, Firebase Authentication, and local emulators. Can you do that?
+
+
+
+  - I need to create an Angular service that imports environment variables and initializes Firebase App
+  - From this Angular Service, can you add Firestore service?
+  - Can you to the current Angular Service the Firebase Authentication service?
+  - Can you Add local emulators to these services?
+
+  ```Typescript
+  import { FirebaseApp, initializeApp } from 'firebase/app';
+  import { Injectable } from '@angular/core';
+
+  import { environment } from './environments/environment';
+
+  @Injectable({
+    providedIn: 'root',
+  })
+  export class FirebaseService {
+    app: FirebaseApp;
+
+    constructor() {
+      this.app = initializeApp(environment.firebaseConfig);
+
+    }
+  }
+  ```
