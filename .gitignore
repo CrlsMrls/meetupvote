@@ -41,8 +41,5 @@ testem.log
 .DS_Store
 Thumbs.db
 
-# environment file
-environment.prod.ts
-
 ui-debug.log
 firebase-debug.log
