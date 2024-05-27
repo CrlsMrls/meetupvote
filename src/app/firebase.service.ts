@@ -32,6 +32,7 @@ export class FirebaseService {
 
   // Create a signal to store the authenticated user
   user = signal<User | null>(null);
+  admin = signal<boolean>(false);
 
   constructor() {
     this.app = initializeApp(environment.firebaseConfig);
@@ -42,6 +43,14 @@ export class FirebaseService {
     // Observe authentication state changes
     onAuthStateChanged(this.auth, (currentUser) => {
       this.user.set(currentUser);
+      if (currentUser) {
+        // update the admin signal based on the user's claims
+        currentUser
+          .getIdTokenResult()
+          .then((idTokenResult) =>
+            this.admin.set(!!idTokenResult.claims['admin'])
+          );
+      }
     });
 
     this.#setupEmulators();
@@ -77,7 +86,7 @@ export class FirebaseService {
     try {
       const result = await signInWithPopup(this.auth, this.GoogleProvider);
       const credential = GoogleAuthProvider.credentialFromResult(result);
-      console.log('Signed in with Google ' + credential);
+      console.log('Signed in with Google ', credential);
     } catch (error) {
       console.error('Error signing in with Google ', error);
     }
@@ -87,7 +96,7 @@ export class FirebaseService {
     try {
       const result = await signInWithPopup(this.auth, this.GithubProvider);
       const credential = GithubAuthProvider.credentialFromResult(result);
-      console.log('Signed in with GitHub ' + credential);
+      console.log('Signed in with GitHub ', credential);
     } catch (error) {
       console.error('Error signing in with GitHub ', error);
     }
@@ -95,5 +104,6 @@ export class FirebaseService {
 
   async signOut() {
     await signOut(this.auth);
+    this.admin.set(false);
   }
 }

@@ -1,9 +1,19 @@
 # Ideas
 
+## Use cases
+- Plugin (only focus on VSC)
+- StackOverflow/Google-search Questions
+- Upgrade techstack to newer versions 
+- Code reasoning: Explain this code / Document this class
+- Prompting
+- Improve code code and fix known-issue
+- One shot coding
+- Iterative coding
+
 ## Knowledge/StackOverflow Questions
-- how to transform an observable to a signal
+- how to transform an observable to a signal? vs. I am coding an Authirization Angular service, the user can be logged in or logged out, this information is shared with a state using an observable, I want to transform this observable to a signal, how can I do that?
 - what is the TypeScript type for an Angular signal?
-- Having a list of CSS classes, how can I apply to the parent component?
+- Having a list of CSS classes, how can I apply to an Angular parent component?
 
 ## Upgrades
 

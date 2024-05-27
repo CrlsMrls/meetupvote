@@ -2,20 +2,18 @@ import { Component, Signal, inject, signal } from '@angular/core';
 import { BackendService } from '../../backend.service';
 import { ButtonComponent } from '../../components/button/button.component';
 import { CardComponent } from '../../components/card/card.component';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterStateSnapshot } from '@angular/router';
 import { NavigationService } from '../../header.service';
 import { Election, Question } from '../../models';
 import { FirebaseService } from '../../firebase.service';
 
 @Component({
-  selector: 'app-election-detail',
   standalone: true,
-  imports: [CardComponent, ButtonComponent, RouterModule],
+  imports: [CardComponent, ButtonComponent],
   providers: [BackendService],
-  templateUrl: './election-detail.component.html',
-  styleUrl: './election-detail.component.css',
+  templateUrl: './admin-election.component.html',
 })
-export class ElectionDetailComponent {
+export class AdminElectionComponent {
   backendService: BackendService = inject(BackendService);
   headerService: NavigationService = inject(NavigationService);
   firebaseService: FirebaseService = inject(FirebaseService);
@@ -38,9 +36,13 @@ export class ElectionDetailComponent {
     this.headerService.setHeaderText(this.election.title);
     this.headerService.setNavItems([
       {
-        title: this.election.shortTitle,
+        title: `ADMIN ${this.election.shortTitle}`,
         path: `/elections/${electionId}`,
       },
     ]);
+  }
+
+  printElection(): void {
+    this.backendService.getFirestoreElections();
   }
 }

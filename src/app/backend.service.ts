@@ -6,103 +6,107 @@
 // - add Votes to a Question by id
 // - add Comments to a Question by id
 
-import { Injectable, Signal, signal } from '@angular/core';
+import { Injectable, Signal, inject, signal } from '@angular/core';
 import { Election, Question, Vote, Comment } from './models';
 import { Observable, of } from 'rxjs';
+import { FirebaseService } from './firebase.service';
+import { getDocs, collection, where, query } from 'firebase/firestore';
 
 @Injectable()
 export class BackendService {
+  db = inject(FirebaseService).firestore;
+
   private elections: Election[] = [
     {
       id: '1',
       title: 'First election',
       shortTitle: 'Election 1',
       description: 'This is the first election',
-      state: 'visible',
+      visibility: 'public',
     },
     {
       id: '2',
       title: 'Second election',
       shortTitle: 'Election 2',
       description: 'This is the second election',
-      state: 'hidden',
+      visibility: 'private',
     },
     {
       id: '3',
       title: 'Third election',
       shortTitle: 'Election 3',
       description: 'This is the third election',
-      state: 'visible',
+      visibility: 'public',
     },
     {
-      id: '4',
+      id: 'KMTOxnqCY8zJCyAcaMTO',
       title: 'Fourth election',
       shortTitle: 'Election 4',
       description: 'This is the fourth election',
-      state: 'hidden',
+      visibility: 'private',
     },
     {
       id: '5',
       title: 'Fifth election',
       shortTitle: 'Election 5',
       description: 'This is the fifth election',
-      state: 'visible',
+      visibility: 'public',
     },
     {
       id: '6',
       title: 'Sixth election',
       shortTitle: 'Election 6',
       description: 'This is the sixth election',
-      state: 'hidden',
+      visibility: 'private',
     },
     {
       id: '7',
       title: 'Seventh election',
       shortTitle: 'Election 7',
       description: 'This is the seventh election',
-      state: 'visible',
+      visibility: 'public',
     },
     {
       id: '8',
       title: 'Eighth election',
       shortTitle: 'Election 8',
       description: 'This is the eighth election',
-      state: 'hidden',
+      visibility: 'private',
     },
     {
       id: '9',
       title: 'Ninth election',
       shortTitle: 'Election 9',
       description: 'This is the ninth election',
-      state: 'visible',
+      visibility: 'public',
     },
     {
       id: '10',
       title: 'Tenth election',
       shortTitle: 'Election 10',
       description: 'This is the tenth election',
-      state: 'hidden',
+      visibility: 'private',
     },
     {
       id: '11',
       title: 'Eleventh election',
       shortTitle: 'Election 11',
       description: 'This is the eleventh election',
-      state: 'visible',
+      visibility: 'public',
     },
     {
       id: '12',
       title: 'Twelfth election',
       shortTitle: 'Election 12',
       description: 'This is the twelfth election',
-      state: 'hidden',
+      visibility: 'private',
     },
   ];
 
   private questions: Question[] = [
     {
       id: '1',
-      electionId: '1',
+      electionId: 'KMTOxnqCY8zJCyAcaMTO',
       title: 'Question 1',
       description: 'What is your favorite color?',
       type: 'single-choice',
@@ -132,7 +136,7 @@ export class BackendService {
     },
     {
       id: '2',
-      electionId: '1',
+      electionId: 'KMTOxnqCY8zJCyAcaMTO',
       title: '2. Extremely long question title that should be truncated',
       description: 'What is your favorite animal?',
       type: 'single-choice',
@@ -220,6 +224,26 @@ export class BackendService {
 
   getElections(): Election[] {
     return this.elections;
+  }
+
+  async getFirestoreElections(): Promise<Election[]> {
+    const result: Election[] = [];
+
+    try {
+      const q = query(
+        collection(this.db, 'elections'),
+        where('visibility', '==', 'public')
+      );
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        const election = doc.data() as Election;
+        election.id = doc.id;
+        result.push(election);
+      });
+    } catch (e) {
+      console.error('Error fetchint documents: ', e);
+    }
+    return result;
   }
 
   getElectionById(id: string): Election {

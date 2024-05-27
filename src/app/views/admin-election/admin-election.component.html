@@ -1,8 +1,4 @@
-@if (firebaseService.admin()) {
-<div class="flex justify-end">
-  <a routerLink="/admin-election/{{ election?.id }}" class="btn">Admin election</a>
-</div>
-}
+<app-button (click)="printElection()" class="mb-4" text="Print Elections"></app-button>
 
 <div class="flex flex-wrap">
   @for (question of questions(); track $index) {

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostBinding, input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -11,6 +11,5 @@ import { RouterModule } from '@angular/router';
 export class CardComponent {
   title = input.required<string>();
   subTitle = input<string>();
-  link = input<string>();
-  // @HostBinding('class') class = 'w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-4';
+  link = input<string | null>();
 }

@@ -5,7 +5,7 @@ export interface Election {
   title: string;
   shortTitle: string;
   description: string;
-  state: 'visible' | 'hidden';
+  visibility: 'public' | 'private';
 }
 
 export interface Question {
