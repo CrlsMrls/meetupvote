@@ -1,8 +1,9 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { NavigationService } from '../../header.service';
+import { NavigationService } from '../../services/header.service';
 import { RouterModule } from '@angular/router';
-import { FirebaseService } from '../../firebase.service';
+import { FirebaseService } from '../../services/firebase.service';
 import { CommonModule } from '@angular/common';
+import { BackendService } from '../../services/backend.service';
 
 @Component({
   selector: 'app-header',
@@ -10,11 +11,11 @@ import { CommonModule } from '@angular/common';
   imports: [RouterModule, CommonModule],
   providers: [],
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit {
-  public navigationService = inject(NavigationService);
-  public firebaseService = inject(FirebaseService);
+  protected navigationService = inject(NavigationService);
+  protected firebaseService = inject(FirebaseService);
+
   isDarkMode: boolean = false;
 
   ngOnInit(): void {

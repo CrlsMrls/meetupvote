@@ -1,0 +1,14 @@
+<div>
+  @if (backendService.election() == null) {
+  <h2>loading...</h2>
+  }
+  @else {
+  <h2>{{ backendService.election()?.title }}</h2>
+  <pre>
+    {{ backendService.election() | json }}
+  </pre>
+  <pre>
+  {{ backendService.question() | json }}
+  </pre>
+  }
+</div>

@@ -1,16 +1,54 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { ElectionComponent } from './views/election/election.component';
-import { ElectionDetailComponent } from './views/election-detail/election-detail.component';
-import { QuestionComponent } from './views/question/question.component';
-import { AdminElectionComponent } from './views/admin-election/admin-election.component';
+import { NgModule, inject } from '@angular/core';
+import {
+  ActivatedRouteSnapshot,
+  CanActivateFn,
+  ResolveFn,
+  RouterModule,
+  RouterStateSnapshot,
+  Routes,
+} from '@angular/router';
+import { environment } from '../environments/environment';
+
+import { FirebaseService } from './services/firebase.service';
+import { AdminBackendService } from './services/admin-backend.service';
+import { ElectionComponent } from './views/admin/election/election.component';
+import { NotFoundComponent } from './views/notfound/notfound.component';
+import { VotersComponent } from './views/voters/voters.component';
+import { ElectionListComponent } from './views/admin/election-list/election-list.component';
+
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const adminGuardFunction: CanActivateFn = async (
+  next: ActivatedRouteSnapshot,
+  state: RouterStateSnapshot
+): Promise<boolean> => {
+  const firebaseService = inject(FirebaseService);
+  if (!environment.production) {
+    await wait(1000);
+  }
+  return firebaseService.admin();
+};
 
 export const routes: Routes = [
-  { path: 'elections', component: ElectionComponent },
-  { path: 'elections/:id', component: ElectionDetailComponent },
-  { path: 'admin-election/:id', component: AdminElectionComponent },
-  { path: 'elections/:id/question/:qid', component: QuestionComponent },
-  { path: '', redirectTo: '/elections', pathMatch: 'full' },
+  {
+    path: 'admin',
+    canActivate: [adminGuardFunction],
+    // resolve: { data: () => inject(AdminBackendService).loading },
+    children: [
+      {
+        path: 'elections',
+        component: ElectionListComponent,
+      },
+      { path: 'elections/:id', component: ElectionComponent },
+    ],
+  },
+  {
+    path: ':id',
+    component: VotersComponent,
+  },
+  { path: '', redirectTo: '/admin/elections', pathMatch: 'full' },
+  { path: '404', component: NotFoundComponent },
+  { path: '**', redirectTo: '/404' }, // The wildcard '**' matches any path
 ];
 
 @NgModule({

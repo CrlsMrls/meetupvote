@@ -1,16 +1,18 @@
 # Ideas
 
 ## Use cases
+
 - Plugin (only focus on VSC)
 - StackOverflow/Google-search Questions
-- Upgrade techstack to newer versions 
+- Upgrade techstack to newer versions
 - Code reasoning: Explain this code / Document this class
 - Prompting
-- Improve code code and fix known-issue
+- Improve code and fix known-issues
 - One shot coding
 - Iterative coding
 
 ## Knowledge/StackOverflow Questions
+
 - how to transform an observable to a signal? vs. I am coding an Authirization Angular service, the user can be logged in or logged out, this information is shared with a state using an observable, I want to transform this observable to a signal, how can I do that?
 - what is the TypeScript type for an Angular signal?
 - Having a list of CSS classes, how can I apply to an Angular parent component?
@@ -49,10 +51,10 @@ I want to transform the `header$` observable to a signal. How can I do that?
 
 ```
 
-## Iterative 
-
+## Iterative
 
 - can you transform this into a card component?
+
 ```HTML
 
   <div class="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-4">
@@ -69,33 +71,30 @@ I want to transform the `header$` observable to a signal. How can I do that?
     </div>
   </div>
 
-  ```
+```
 
+I need to create an Angular Service, that imports environment variables, initializes Firebase, adds Firestore service, Firebase Authentication, and local emulators. Can you do that?
 
-  I need to create an Angular Service, that imports environment variables, initializes Firebase, adds Firestore service, Firebase Authentication, and local emulators. Can you do that?
+- I need to create an Angular service that imports environment variables and initializes Firebase App
+- From this Angular Service, can you add Firestore service?
+- Can you to the current Angular Service the Firebase Authentication service?
+- Can you Add local emulators to these services?
 
+```Typescript
+import { FirebaseApp, initializeApp } from 'firebase/app';
+import { Injectable } from '@angular/core';
 
+import { environment } from './environments/environment';
 
-  - I need to create an Angular service that imports environment variables and initializes Firebase App
-  - From this Angular Service, can you add Firestore service?
-  - Can you to the current Angular Service the Firebase Authentication service?
-  - Can you Add local emulators to these services?
+@Injectable({
+  providedIn: 'root',
+})
+export class FirebaseService {
+  app: FirebaseApp;
 
-  ```Typescript
-  import { FirebaseApp, initializeApp } from 'firebase/app';
-  import { Injectable } from '@angular/core';
+  constructor() {
+    this.app = initializeApp(environment.firebaseConfig);
 
-  import { environment } from './environments/environment';
-
-  @Injectable({
-    providedIn: 'root',
-  })
-  export class FirebaseService {
-    app: FirebaseApp;
-
-    constructor() {
-      this.app = initializeApp(environment.firebaseConfig);
-
-    }
   }
-  ```
+}
+```

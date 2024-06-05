@@ -56,19 +56,23 @@
       }
 
       @if (firebaseService.admin()) {
-      <img class="h-6 w-6" src="admin.svg" alt="Admin">
+      <a routerLink="/admin/elections">
+        <img class="h-6 w-6" src="admin.svg" alt="Admin">
+      </a>
       }
 
     </div>
   </div>
 </header>
+
+@if (firebaseService.admin()) {
 <div class="bg-amber-500 dark:bg-amber-400 py-3 px-6">
   <div class="container mx-auto flex items-center justify-between truncate">
     <nav class="flex" aria-label="Breadcrumb">
       <ol role="list" class="flex items-center space-x-1">
         <li>
           <div>
-            <a routerLink="/" class="text-gray-800 hover:text-gray-700 ">
+            <a routerLink="/admin/elections/" class="text-gray-800 hover:text-gray-700">
               <svg class="h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                 <path fill-rule="evenodd"
                   d="M9.293 2.293a1 1 0 011.414 0l7 7A1 1 0 0117 11h-1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-3a1 1 0 00-1-1H9a1 1 0 00-1 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-6H3a1 1 0 01-.707-1.707l7-7z"
@@ -94,7 +98,7 @@
     </nav>
   </div>
 </div>
-
+}
 
 @if (!firebaseService.user()) {
 <div class="border-l-4 border-yellow-400 bg-yellow-50 p-4">

@@ -5,21 +5,22 @@ service cloud.firestore {
     // Election:
     // - Admin can read all
     // - Anyone can read if election.state == visible
-    function adminOrPublic() {
-      return request.auth.token.admin != null && request.auth.token.admin != false || resource.data.visibility == 'public';
-    }
 
     match /elections/{electionId} {
+      allow read: if resource.data.visibility == 'public'
+      allow write, delete: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.admin == true;
+    }
+
+    match /questions/{questionId} {
       allow read;
       allow write, delete: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.admin == true;
     }
+
 
     match /users/{userId} {
       allow read;
       allow write: if false;
     }
-
-
 
     // Messages:
     //   - Anyone can read.

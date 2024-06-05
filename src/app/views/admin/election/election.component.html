@@ -1,0 +1,19 @@
+<app-dialog #dialog [title]="'Add new Question'">
+  <app-title-descr [showId]="false" (save)="onSave($event)" />
+</app-dialog>
+
+<div class="flex items-center ml-4 gap-4">
+  <app-button text="Add Question" (click)="dialog.open.set(true)"></app-button>
+  <app-button text="View election" (click)="viewElection()"></app-button>
+</div>
+
+<div class="flex flex-wrap">
+
+  @for (question of adminBackendService.questions() ; track $index) {
+  <app-card [title]="question.title" class="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-4">
+    <p class="text-gray-600 dark:text-gray-400 mb-4">{{ question.description }}</p>
+    <p class="text-gray-600 dark:text-gray-400 mb-4">{{ question.votes.length }}</p>
+
+  </app-card>
+  }
+</div>

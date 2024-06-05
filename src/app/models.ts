@@ -1,23 +1,21 @@
 type id = string;
 
 export interface Election {
-  id: id;
+  id?: id;
   title: string;
-  shortTitle: string;
   description: string;
   visibility: 'public' | 'private';
+  state: 'open' | 'voting' | 'closed';
+  activeQuestionId?: id;
 }
 
 export interface Question {
-  id: id;
+  id?: id;
   electionId: string;
   title: string;
   description: string;
-  type: 'open-text' | 'single-choice';
-  state: 'open' | 'voting' | 'closed';
-  answer: string[];
+  answers: string[];
   votes: Vote[];
-  comments: Comment[];
 }
 
 export interface Vote {
