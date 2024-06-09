@@ -42,6 +42,10 @@ export class ElectionListComponent {
     ]);
   }
 
+  ngOnDestroy(): void {
+    this.adminBackendService.unsubscribe();
+  }
+
   // navigate to the election details page
   navigateToElectionDetails(electionId: string): void {
     this.#router.navigate(['/admin/elections', electionId]);

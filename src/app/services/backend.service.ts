@@ -19,8 +19,6 @@ export class BackendService {
   prevQuestionSubs: Unsubscribe | null = null;
   prevElectionSubs: Unsubscribe | null = null;
 
-  constructor() {}
-
   async loadElectionById(id: string | null): Promise<Election | undefined> {
     if (!id) {
       throw new Error('Election id is required in loadElectionById');
@@ -49,7 +47,7 @@ export class BackendService {
     try {
       const questionId = election.activeQuestionId;
       const state = election.state;
-      if (state !== 'voting' || !questionId) {
+      if (!questionId) {
         this.question.set(null);
         return;
       }

@@ -5,7 +5,6 @@ import { NavigationService } from '../../../services/header.service';
 import { CardComponent } from '../../../components/card/card.component';
 import { ButtonComponent } from '../../../components/button/button.component';
 import { FirebaseService } from '../../../services/firebase.service';
-import { CommonModule } from '@angular/common';
 import { AdminBackendService } from '../../../services/admin-backend.service';
 import {
   TitleDescrComponent,
@@ -13,6 +12,7 @@ import {
 } from '../../../components/form/title-descr.component';
 import { DialogComponent } from '../../../components/dialog/dialog.component';
 import { Election, Question } from '../../../models';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-election',
@@ -20,18 +20,19 @@ import { Election, Question } from '../../../models';
   imports: [
     CardComponent,
     ButtonComponent,
-    CommonModule,
     TitleDescrComponent,
     DialogComponent,
+    CommonModule,
   ],
   providers: [BackendService],
   templateUrl: './election.component.html',
 })
 export class ElectionComponent {
-  adminBackendService: AdminBackendService = inject(AdminBackendService);
-  backendService: BackendService = inject(BackendService);
-  headerService: NavigationService = inject(NavigationService);
-  firebaseService = inject(FirebaseService);
+  protected firebaseService = inject(FirebaseService);
+  protected adminBackendService: AdminBackendService =
+    inject(AdminBackendService);
+  protected backendService: BackendService = inject(BackendService);
+  protected headerService: NavigationService = inject(NavigationService);
   #activeRoute: ActivatedRoute = inject(ActivatedRoute);
   #router: Router = inject(Router);
 
@@ -63,9 +64,21 @@ export class ElectionComponent {
     ]);
   }
 
-  viewElection() {
+  ngOnDestroy(): void {
+    this.adminBackendService.unsubscribe();
+  }
+
+  onViewElection(): void {
     const electionId = this.#activeRoute.snapshot.paramMap.get('id');
     this.#router.navigate([electionId]);
+  }
+
+  onUnselect() {
+    const electionId = this.#activeRoute.snapshot.paramMap.get('id');
+    if (!electionId) {
+      throw new Error('Election id is required');
+    }
+    this.adminBackendService.updateActiveQuestion(electionId, null);
   }
 
   onSave(form: formContent): void {
@@ -85,5 +98,13 @@ export class ElectionComponent {
     };
 
     this.adminBackendService.addQuestion(question);
+  }
+
+  onSelectQuestion(voteId: string | undefined): void {
+    const electionId = this.#activeRoute.snapshot.paramMap.get('id');
+    if (!voteId || !electionId) {
+      throw new Error('Vote id is required');
+    }
+    this.adminBackendService.updateActiveQuestion(electionId, voteId);
   }
 }

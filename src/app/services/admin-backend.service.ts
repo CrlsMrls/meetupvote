@@ -20,6 +20,7 @@ import {
   doc,
   setDoc,
   addDoc,
+  updateDoc,
 } from 'firebase/firestore';
 
 @Injectable()
@@ -33,41 +34,33 @@ export class AdminBackendService {
   prevQuestionsSubs: Unsubscribe | null = null;
   prevElectionSubs: Unsubscribe | null = null;
 
-  // // loading Elections is done only once at startup
-  // async #getFirestoreElections(): Promise<Election[]> {
-  //   const result: Election[] = [];
+  unsubscribe() {
+    // helper function to unsubscribe from the previous subscription
+    const unsubs = (fn: Unsubscribe | null) => {
+      if (fn && typeof fn === 'function') {
+        fn();
+      }
+      fn = null;
+    };
 
-  //   try {
-  //     const q = query(
-  //       collection(this.db, 'elections'),
-  //       where('visibility', '==', 'public')
-  //     );
-  //     const querySnapshot = await getDocs(q);
-  //     querySnapshot.forEach((doc) => {
-  //       const election = doc.data() as Election;
-  //       election.id = doc.id;
-  //       result.push(election);
-  //     });
-  //   } catch (e) {
-  //     console.error('Error fetching elections: ', e);
-  //   }
-  //   return result;
-  // }
+    unsubs(this.prevElectionSubs);
+    unsubs(this.prevQuestionsSubs);
+  }
 
-  // async getElectionById(id: string | null): Promise<Election> {
-  //   if (!id) {
-  //     throw new Error('Election id is required in loadElectionById');
-  //   }
-  //   await this.loading;
-  //   const election = this.elections().find((election) => election.id === id);
-  //   if (!election) {
-  //     throw new Error('Election not found in loadElectionById');
-  //   }
-  //   this.election.set(election);
-  //   await this.#loadQuestionsFromElection(id);
+  async updateActiveQuestion(
+    electionId: string,
+    questionId: string | null
+  ): Promise<void> {
+    try {
+      const docRef = doc(this.db, 'elections', electionId);
 
-  //   return election;
-  // }
+      await updateDoc(docRef, {
+        activeQuestionId: questionId,
+      });
+    } catch (e) {
+      console.error('Error updating active question: ', e);
+    }
+  }
 
   async loadElections(): Promise<void> {
     if (this.prevElectionSubs) {
@@ -162,21 +155,4 @@ export class AdminBackendService {
       console.error('Error fetching questions: ', e);
     }
   }
-
-  // async getQuestionById(
-  //   electionId: string | null,
-  //   id: string | null
-  // ): Promise<{ question: Question; election: Election }> {
-  //   if (!id || !electionId) {
-  //     throw new Error('id are required in loadElectionById');
-  //   }
-  //   const election = await this.getElectionById(electionId);
-
-  //   const question = this.questions().find((question) => question.id === id);
-  //   if (!question) {
-  //     throw new Error('Question not found in getQuestionById');
-  //   }
-  //   this.question.set(question);
-  //   return { question, election };
-  // }
 }
