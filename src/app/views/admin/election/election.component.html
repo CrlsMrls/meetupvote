@@ -7,7 +7,7 @@
 </app-dialog>
 
 <div class="flex items-center gap-4">
-  <app-button text="View election" (click)="viewElection()"></app-button>
+  <a [href]="'/' + adminBackendService.election()?.id"><app-button text="View election"></app-button></a>
   <app-button text="Add Question" (click)="dialog.open.set(true)"></app-button>
   <app-button text="Unselect Question" (click)="onUnselect()"></app-button>
   <app-button text="Debug" (click)="debugDialog.open.set(true)"></app-button>

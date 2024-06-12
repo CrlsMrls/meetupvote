@@ -1,14 +1,45 @@
-<div>
+<section class="container mx-auto">
   @if (backendService.election() == null) {
   <h2>loading...</h2>
   }
   @else {
-  <h2>{{ backendService.election()?.title }}</h2>
-  <pre>
-    {{ backendService.election() | json }}
-  </pre>
-  <pre>
-  {{ backendService.question() | json }}
-  </pre>
+  <!-- 
+    <h2>{{ backendService.election()?.title }}</h2>
+    <pre>
+      {{ backendService.election() | json }}
+    </pre>
+    <pre>
+      {{ backendService.question() | json }}
+    </pre>
+  -->
+
+  @if(backendService.question() == null) {
+  <h2>waiting for a question...</h2>
   }
-</div>
+  @else {
+  <app-card title="{{ backendService.question()?.title }}" [subTitle]="backendService.question()?.description">
+
+    @if (hasVoted()) {
+    <div class="m-10 flex justify-center">
+      <h3 class="text-xl font-bold text-gray-800 dark:text-white">Thank you for voting!</h3>
+    </div>
+    } @else {
+
+    <app-radio-group [options]="backendService.question()?.options || []" legend="Who did a better job?"
+      (selected)="onOptionSelected($event)"></app-radio-group>
+
+    <div class="w-full border-t border-gray-300 mt-6"></div>
+
+    <app-button-group [options]="weights" legend="How important is this?"
+      (selected)="onImportanceSelected($event)"></app-button-group>
+
+    <div class="mt-6 flex justify-end">
+      <app-button text="Submit vote" (click)="onSubmitVote()"></app-button>
+    </div>
+    }
+  </app-card>
+  }
+
+
+  }
+</section>

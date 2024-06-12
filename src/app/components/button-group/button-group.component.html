@@ -1,0 +1,18 @@
+<fieldset class="mt-6 dark:bg-gray-800 dark:text-white max-w-2xl">
+  <legend class="text-sm font-semibold leading-6 dark:text-white">{{legend()}}</legend>
+  @if (description()) {
+  <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-300">{{description()}}</p>
+  }
+
+  <span class="isolate inline-flex rounded-md shadow-sm mt-6 w-full">
+    @for (option of options(); track $index) {
+    <button type="button" [ngClass]="css($index)" (click)="onClick($index)">
+      {{ option}}
+    </button>
+    }
+  </span>
+
+
+
+
+</fieldset>

@@ -7,9 +7,15 @@
 // - add Comments to a Question by id
 
 import { Injectable, inject, signal } from '@angular/core';
-import { Election, Question } from '../models';
+import { Election, Question, Vote } from '../models';
 import { FirebaseService } from './firebase.service';
-import { onSnapshot, Unsubscribe, doc } from 'firebase/firestore';
+import {
+  onSnapshot,
+  Unsubscribe,
+  doc,
+  arrayUnion,
+  updateDoc,
+} from 'firebase/firestore';
 
 @Injectable()
 export class BackendService {
@@ -64,6 +70,17 @@ export class BackendService {
       });
     } catch (e) {
       console.error('Error fetching active question: ', e);
+    }
+  }
+
+  async vote(questionId: string, vote: Vote): Promise<void> {
+    try {
+      const qRef = doc(this.db, 'questions', questionId);
+      await updateDoc(qRef, {
+        votes: arrayUnion(vote),
+      });
+    } catch (e) {
+      console.error('Error voting: ', e);
     }
   }
 }

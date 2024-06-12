@@ -65,7 +65,7 @@
   </div>
 </header>
 
-@if (firebaseService.admin()) {
+@if (navigationService.navItems().length > 0) {
 <div class="bg-amber-500 dark:bg-amber-400 py-3 px-6">
   <div class="container mx-auto flex items-center justify-between truncate">
     <nav class="flex" aria-label="Breadcrumb">

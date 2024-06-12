@@ -6,4 +6,4 @@ bootstrapApplication(AppComponent, appConfig).catch((err) =>
   console.error(err)
 );
 
-console.log('version 1.0.0');
+console.info('version 0.0.1');

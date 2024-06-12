@@ -89,11 +89,19 @@ export class ElectionComponent {
       throw new Error('Election id is required');
     }
 
+    // possible answers are hardcoded for now
+    const options: string[] = [
+      'GitHub Copilot',
+      'Gemini Code Assistant',
+      'Both',
+      'None',
+    ];
+
     const question: Question = {
       electionId,
       title: form.title,
       description: form.description || '',
-      answers: ['GitHub Copilot', 'Gemini Code Assistant', 'Both', 'None'],
+      options,
       votes: [],
     };
 

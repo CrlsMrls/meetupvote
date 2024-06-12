@@ -14,15 +14,16 @@ export interface Question {
   electionId: string;
   title: string;
   description: string;
-  answers: string[];
+  options: string[];
   votes: Vote[];
 }
 
 export interface Vote {
-  id: id;
+  id?: id;
   voter: string;
   votedOption: number;
-  timestamp: number;
+  weight: number;
+  timestamp?: number;
 }
 
 export interface Comment {
