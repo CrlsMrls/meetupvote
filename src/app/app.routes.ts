@@ -16,6 +16,7 @@ import { ElectionComponent } from './views/admin/election/election.component';
 import { NotFoundComponent } from './views/notfound/notfound.component';
 import { VotersComponent } from './views/voters/voters.component';
 import { ElectionListComponent } from './views/admin/election-list/election-list.component';
+import { ResultsComponent } from './views/admin/results/results.component';
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -41,6 +42,7 @@ export const routes: Routes = [
         component: ElectionListComponent,
       },
       { path: 'elections/:id', component: ElectionComponent },
+      { path: 'results/:id', component: ResultsComponent },
     ],
   },
   {

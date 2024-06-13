@@ -1,14 +1,16 @@
-import { Component, computed, inject, signal } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { BackendService } from '../../services/backend.service';
-import { NavigationService } from '../../services/header.service';
-import { CardComponent } from '../../components/card/card.component';
-import { ButtonComponent } from '../../components/button/button.component';
-import { FirebaseService } from '../../services/firebase.service';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RadioGroupComponent } from '../../components/radio/radio-group.component';
-import { ButtonGroupComponent } from '../../components/button-group/button-group.component';
-import { Vote } from '../../models';
+import { ActivatedRoute } from '@angular/router';
+
+import { BackendService } from '@services/backend.service';
+import { NavigationService } from '@services/header.service';
+import { FirebaseService } from '@services/firebase.service';
+import { CardComponent } from '@components/card/card.component';
+import { ButtonComponent } from '@components/button/button.component';
+import { RadioGroupComponent } from '@components/radio/radio-group.component';
+import { ButtonGroupComponent } from '@components/button-group/button-group.component';
+import { Question, Vote } from '@app/models';
+import { WeightsComponent } from '@components/weights/weights.component';
 
 @Component({
   standalone: true,
@@ -18,8 +20,9 @@ import { Vote } from '../../models';
     CommonModule,
     RadioGroupComponent,
     ButtonGroupComponent,
+    WeightsComponent,
   ],
-  providers: [BackendService],
+  providers: [],
   templateUrl: './voters.component.html',
 })
 export class VotersComponent {
@@ -32,6 +35,8 @@ export class VotersComponent {
 
   selectedOption: number | undefined;
   selectedImportance: number | undefined;
+
+  results = signal<Question[] | null>(null);
 
   hasVoted = computed(() => {
     const question = this.backendService.question();
@@ -46,6 +51,21 @@ export class VotersComponent {
 
   constructor() {
     this.#loadElection();
+    effect(() => this.loadResults());
+  }
+
+  private async loadResults(): Promise<void> {
+    const election = this.backendService.election();
+    if (!election?.state || election.state !== 'closed') {
+      return undefined;
+    }
+    if (!election.id) {
+      throw new Error('Election cannot have an id');
+    }
+    const results = await this.backendService.loadQuestionsByElectionId(
+      election.id
+    );
+    this.results.set(results);
   }
 
   async #loadElection() {

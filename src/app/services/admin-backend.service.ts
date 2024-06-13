@@ -6,12 +6,10 @@
 // - add Votes to a Question by id
 // - add Comments to a Question by id
 
-import { Injectable, Signal, inject, signal } from '@angular/core';
-import { Election, Question, Vote, Comment } from '../models';
-import { Observable, of } from 'rxjs';
+import { Injectable, inject, signal } from '@angular/core';
+import { Election, Question } from '../models';
 import { FirebaseService } from './firebase.service';
 import {
-  getDocs,
   collection,
   where,
   query,
@@ -59,6 +57,21 @@ export class AdminBackendService {
       });
     } catch (e) {
       console.error('Error updating active question: ', e);
+    }
+  }
+
+  async updateElectionState(
+    electionId: string,
+    state: 'closed' | 'voting'
+  ): Promise<void> {
+    try {
+      const docRef = doc(this.db, 'elections', electionId);
+
+      await updateDoc(docRef, {
+        state: state,
+      });
+    } catch (e) {
+      console.error('Error closing election: ', e);
     }
   }
 

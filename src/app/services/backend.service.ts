@@ -15,6 +15,10 @@ import {
   doc,
   arrayUnion,
   updateDoc,
+  collection,
+  query,
+  where,
+  getDocs,
 } from 'firebase/firestore';
 
 @Injectable()
@@ -82,5 +86,26 @@ export class BackendService {
     } catch (e) {
       console.error('Error voting: ', e);
     }
+  }
+
+  async loadQuestionsByElectionId(electionId: string): Promise<Question[]> {
+    try {
+      const questions: Question[] = [];
+      const q = query(
+        collection(this.db, 'questions'),
+        where('electionId', '==', electionId)
+      );
+
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        const question = doc.data() as Question;
+        question.id = doc.id;
+        questions.push(question);
+      });
+      return questions;
+    } catch (e) {
+      console.error('Error fetching questions: ', e);
+    }
+    return [];
   }
 }

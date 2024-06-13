@@ -1,0 +1,13 @@
+<div class="flex items-center gap-4">
+  <a [href]="'/' + adminBackendService.election()?.id"><app-button text="View election"></app-button></a>
+</div>
+
+<app-card title="List of questions" class="p-4">
+  <ul role="list" class="divide-y  divide-gray-200">
+    @for (question of adminBackendService.questions() ; track $index) {
+    <li class="gap-x-6 gap-y-4 py-5 sm:flex-nowrap">
+      <app-weights [question]="question"></app-weights>
+    </li>
+    }
+  </ul>
+</app-card>

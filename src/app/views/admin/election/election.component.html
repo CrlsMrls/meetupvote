@@ -8,13 +8,22 @@
 
 <div class="flex items-center gap-4">
   <a [href]="'/' + adminBackendService.election()?.id"><app-button text="View election"></app-button></a>
+  <a [href]="'/admin/results/' + adminBackendService.election()?.id"><app-button text="View results"></app-button></a>
+  <app-button text="Debug" (click)="debugDialog.open.set(true)"></app-button>
+  @if (!isElectionClosed()) {
   <app-button text="Add Question" (click)="dialog.open.set(true)"></app-button>
   <app-button text="Unselect Question" (click)="onUnselect()"></app-button>
-  <app-button text="Debug" (click)="debugDialog.open.set(true)"></app-button>
+  <app-button type="primary" text="Close Election" (click)="onCloseElection()"></app-button>
+  } @else {
+  <app-button type="primary" text="Reopen Closed Election" (click)="onReopenElection()"></app-button>
+  }
 
 </div>
 
 <app-card title="List of questions" class="p-4">
+  @if (isElectionClosed()) {
+  <h3 class="text-rose-500">Election is closed!</h3>
+  }
   <ul role="list" class="divide-y  divide-gray-200">
     @for (question of adminBackendService.questions() ; track $index) {
     <li class="flex flex-wrap items-center justify-between gap-x-6 gap-y-4 py-5 sm:flex-nowrap">
@@ -56,6 +65,7 @@
           <dd class="text-sm leading-6 text-gray-900 dark:text-white">{{ question.votes.length }}</dd>
         </div>
 
+        @if (isElectionClosed() == false) {
         <button (click)="onSelectQuestion(question.id)">
           <div class="h-6 w-6 max-h-6 max-w-6 rounded-full ">
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="fill-gray-600 dark:fill-gray-400">
@@ -64,6 +74,7 @@
             </svg>
           </div>
         </button>
+        }
 
       </dl>
     </li>

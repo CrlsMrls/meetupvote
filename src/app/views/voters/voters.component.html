@@ -1,22 +1,15 @@
-<section class="container mx-auto">
+<section class="container mx-auto m-6">
   @if (backendService.election() == null) {
-  <h2>loading...</h2>
+  <h2>loading election...</h2>
   }
   @else {
-  <!-- 
-    <h2>{{ backendService.election()?.title }}</h2>
-    <pre>
-      {{ backendService.election() | json }}
-    </pre>
-    <pre>
-      {{ backendService.question() | json }}
-    </pre>
-  -->
 
-  @if(backendService.question() == null) {
+  @if(backendService.question() == null && results() == null) {
   <h2>waiting for a question...</h2>
   }
-  @else {
+  @else if(backendService.question() != null) {
+
+
   <app-card title="{{ backendService.question()?.title }}" [subTitle]="backendService.question()?.description">
 
     @if (hasVoted()) {
@@ -38,6 +31,20 @@
     </div>
     }
   </app-card>
+
+  }
+
+  @if(results() != null) {
+  <app-card title="Results" class="p-4">
+    <ul role="list" class="divide-y  divide-gray-200">
+      @for (question of results() ; track $index) {
+      <li class="gap-x-6 gap-y-4 py-5 sm:flex-nowrap">
+        <app-weights [question]="question"></app-weights>
+      </li>
+      }
+    </ul>
+  </app-card>
+
   }
 
 

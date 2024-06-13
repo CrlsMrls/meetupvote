@@ -1,10 +1,9 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { NavigationService } from '../../services/header.service';
 import { RouterModule } from '@angular/router';
-import { FirebaseService } from '../../services/firebase.service';
 import { CommonModule } from '@angular/common';
-import { BackendService } from '../../services/backend.service';
 
+import { NavigationService } from '@services/header.service';
+import { FirebaseService } from '@services/firebase.service';
 @Component({
   selector: 'app-header',
   standalone: true,

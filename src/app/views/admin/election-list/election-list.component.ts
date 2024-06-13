@@ -1,18 +1,18 @@
 import { Component, inject, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { NavigationService } from '../../../services/header.service';
-import { CardComponent } from '../../../components/card/card.component';
-import { ButtonComponent } from '../../../components/button/button.component';
-import { FirebaseService } from '../../../services/firebase.service';
+import { NavigationService } from '@services/header.service';
+import { CardComponent } from '@components/card/card.component';
+import { ButtonComponent } from '@components/button/button.component';
+import { FirebaseService } from '@services/firebase.service';
 import { CommonModule } from '@angular/common';
-import { AdminBackendService } from '../../../services/admin-backend.service';
+import { AdminBackendService } from '@services/admin-backend.service';
 import {
   TitleDescrComponent,
   formContent,
-} from '../../../components/form/title-descr.component';
-import { Election } from '../../../models';
-import { DialogComponent } from '../../../components/dialog/dialog.component';
+} from '@components/form/title-descr.component';
+import { Election } from '@app/models';
+import { DialogComponent } from '@components/dialog/dialog.component';
 
 @Component({
   standalone: true,
@@ -65,7 +65,7 @@ export class ElectionListComponent {
       title: form.title,
       description: form.description || '',
       visibility: 'public',
-      state: 'open',
+      state: 'voting',
     };
 
     this.adminBackendService.createElection(election);

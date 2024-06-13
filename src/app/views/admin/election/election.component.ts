@@ -1,21 +1,21 @@
-import { Component, inject, viewChild } from '@angular/core';
+import { Component, computed, inject, viewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BackendService } from '../../../services/backend.service';
-import { NavigationService } from '../../../services/header.service';
-import { CardComponent } from '../../../components/card/card.component';
-import { ButtonComponent } from '../../../components/button/button.component';
-import { FirebaseService } from '../../../services/firebase.service';
-import { AdminBackendService } from '../../../services/admin-backend.service';
+import { CommonModule } from '@angular/common';
+
+import { BackendService } from '@services/backend.service';
+import { NavigationService } from '@services/header.service';
+import { FirebaseService } from '@services/firebase.service';
+import { AdminBackendService } from '@services/admin-backend.service';
+import { CardComponent } from '@components/card/card.component';
+import { ButtonComponent } from '@components/button/button.component';
 import {
   TitleDescrComponent,
   formContent,
-} from '../../../components/form/title-descr.component';
-import { DialogComponent } from '../../../components/dialog/dialog.component';
-import { Election, Question } from '../../../models';
-import { CommonModule } from '@angular/common';
+} from '@components/form/title-descr.component';
+import { DialogComponent } from '@components/dialog/dialog.component';
+import { Question } from '@app/models';
 
 @Component({
-  selector: 'app-election',
   standalone: true,
   imports: [
     CardComponent,
@@ -24,7 +24,6 @@ import { CommonModule } from '@angular/common';
     DialogComponent,
     CommonModule,
   ],
-  providers: [BackendService],
   templateUrl: './election.component.html',
 })
 export class ElectionComponent {
@@ -35,6 +34,11 @@ export class ElectionComponent {
   protected headerService: NavigationService = inject(NavigationService);
   #activeRoute: ActivatedRoute = inject(ActivatedRoute);
   #router: Router = inject(Router);
+
+  isElectionClosed = computed(() => {
+    const election = this.adminBackendService.election();
+    return election?.state === 'closed';
+  });
 
   dialog = viewChild.required<DialogComponent>('dialog');
 
@@ -79,6 +83,22 @@ export class ElectionComponent {
       throw new Error('Election id is required');
     }
     this.adminBackendService.updateActiveQuestion(electionId, null);
+  }
+  onCloseElection(): void {
+    const electionId = this.#activeRoute.snapshot.paramMap.get('id');
+    if (!electionId) {
+      throw new Error('Vote id is required');
+    }
+    this.adminBackendService.updateActiveQuestion(electionId, null);
+    this.adminBackendService.updateElectionState(electionId, 'closed');
+  }
+
+  onReopenElection(): void {
+    const electionId = this.#activeRoute.snapshot.paramMap.get('id');
+    if (!electionId) {
+      throw new Error('Vote id is required');
+    }
+    this.adminBackendService.updateElectionState(electionId, 'voting');
   }
 
   onSave(form: formContent): void {

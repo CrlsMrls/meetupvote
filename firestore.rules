@@ -12,7 +12,7 @@ service cloud.firestore {
     }
 
     match /questions/{questionId} {
-      allow read;
+      allow read, update;
       allow write, delete: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.admin == true;
     }
 
