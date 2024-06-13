@@ -47,7 +47,7 @@ firestore-debug.log
 *.log
 
 # Emulator data
-/emulators-data
+# /emulators-data
 
 # Firebase
 .firebase/*
