@@ -1,5 +1,5 @@
 import { Component, computed, inject, viewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 import { BackendService } from '@services/backend.service';
@@ -23,6 +23,7 @@ import { Question } from '@app/models';
     TitleDescrComponent,
     DialogComponent,
     CommonModule,
+    RouterModule,
   ],
   templateUrl: './election.component.html',
 })

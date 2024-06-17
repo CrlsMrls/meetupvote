@@ -8,7 +8,8 @@
 
 <div class="flex items-center gap-4">
   <a [href]="'/' + adminBackendService.election()?.id"><app-button text="View election"></app-button></a>
-  <a [href]="'/admin/results/' + adminBackendService.election()?.id"><app-button text="View results"></app-button></a>
+  <a [routerLink]="'/admin/results/' + adminBackendService.election()?.id">
+    <app-button text="View results"></app-button></a>
   <app-button text="Debug" (click)="debugDialog.open.set(true)"></app-button>
   @if (!isElectionClosed()) {
   <app-button text="Add Question" (click)="dialog.open.set(true)"></app-button>

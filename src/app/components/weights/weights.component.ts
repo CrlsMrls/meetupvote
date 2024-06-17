@@ -20,6 +20,7 @@ export class WeightsComponent {
   noneVotes: number = 0;
 
   weight = 0;
+  invertWeight = 0;
   weights: number[] = [0, 0, 0, 0, 0, 0];
 
   areTablesVisible = false;
@@ -56,6 +57,8 @@ export class WeightsComponent {
 
     // Average weight is based on 0-5 scale -> multiply by 20 to get 0-100 scale
     this.weight = (20 * sumWeights) / votes.length;
+    // the gray bar hides weight, so we need to invert it
+    this.invertWeight = 100 - this.weight;
     this.weight = parseFloat(this.weight.toFixed(2));
   }
 

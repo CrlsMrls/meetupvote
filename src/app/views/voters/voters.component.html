@@ -1,11 +1,14 @@
+@if (firebaseService.user()) {
 <section class="container mx-auto m-6">
+
+
   @if (backendService.election() == null) {
-  <h2>loading election...</h2>
+  <h2 class="text-gray-800 dark:text-white">loading election...</h2>
   }
   @else {
 
   @if(backendService.question() == null && results() == null) {
-  <h2>waiting for a question...</h2>
+  <h2 class="text-gray-800 dark:text-white">waiting for a question...</h2>
   }
   @else if(backendService.question() != null) {
 
@@ -50,3 +53,4 @@
 
   }
 </section>
+}
