@@ -27,6 +27,7 @@
     <div class="w-full border-t border-gray-300 mt-6"></div>
 
     <app-button-group [options]="weights" legend="How important is this?"
+      description="From 0 (Meh) to 5 (I cannot live without it)"
       (selected)="onImportanceSelected($event)"></app-button-group>
 
     <div class="mt-6 flex justify-end">
